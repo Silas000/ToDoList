@@ -24,10 +24,6 @@ Antes de executar o projeto, você precisa ter o Python instalado em sua máquin
 1. Clone este repositório ou faça o download do código.
 2. Navegue até o diretório do projeto.
 3. (Opcional) Crie um ambiente virtual e ative-o.
-4. Instale as dependências necessárias (se houver) usando o seguinte comando:
-
-   ```bash
-   pip install -r requirements.txt
 
 ## Criador
 Silas Rosário - https://github.com/Silas000
