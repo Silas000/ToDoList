@@ -1,9 +1,9 @@
 import sqlite3
 from tkinter import *
-from tkinter import messagebox
+from tkinter import messagebox, simpledialog
 
-def conectar_db():
-    conn = sqlite3.connect('todo_list.db')
+def conectar_db(nome_db):
+    conn = sqlite3.connect(nome_db)
     return conn
 
 def criar_tabela(conn):
@@ -80,7 +80,12 @@ def marcar_concluida_interface():
 root = Tk()
 root.title("To-Do List")
 
-conn = conectar_db()
+# Solicitar o nome do banco de dados
+nome_db = simpledialog.askstring("Nome do Banco de Dados", "Digite o nome do banco de dados (ex: todo_list.db):")
+if not nome_db:
+    nome_db = 'todo_list.db'  # Nome padrão se o usuário não fornecer
+
+conn = conectar_db(nome_db)
 criar_tabela(conn)
 
 frame_tarefas = Frame(root)
@@ -115,4 +120,3 @@ frame_tarefas.pack(pady=10)
 atualizar_lista()
 
 root.mainloop()
-conn.close()
