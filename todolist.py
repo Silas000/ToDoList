@@ -1,6 +1,7 @@
 import sqlite3
 from tkinter import *
 from tkinter import messagebox, simpledialog
+from tkcalendar import Calendar
 
 def conectar_db(nome_db):
     conn = sqlite3.connect(nome_db)
@@ -50,11 +51,10 @@ def atualizar_lista():
 
 def adicionar_tarefa_interface():
     tarefa = entrada_tarefa.get()
-    prazo = entrada_prazo.get()
-    if tarefa and prazo:
+    prazo = cal.get_date()
+    if tarefa:
         adicionar_tarefa(conn, tarefa, prazo)
         entrada_tarefa.delete(0, END)
-        entrada_prazo.delete(0, END)
         atualizar_lista()
     else:
         messagebox.showwarning("Aviso", "Por favor, preencha todos os campos.")
@@ -80,10 +80,9 @@ def marcar_concluida_interface():
 root = Tk()
 root.title("To-Do List")
 
-# Solicitar o nome do banco de dados
 nome_db = simpledialog.askstring("Nome do Banco de Dados", "Digite o nome do banco de dados (ex: todo_list.db):")
 if not nome_db:
-    nome_db = 'todo_list.db'  # Nome padrão se o usuário não fornecer
+    nome_db = 'todo_list.db'
 
 conn = conectar_db(nome_db)
 criar_tabela(conn)
@@ -98,9 +97,9 @@ Label(frame_adicionar, text="Tarefa:").grid(row=0, column=0)
 entrada_tarefa = Entry(frame_adicionar, width=30)
 entrada_tarefa.grid(row=0, column=1)
 
-Label(frame_adicionar, text="Prazo (YYYY-MM-DD HH:MM):").grid(row=1, column=0)
-entrada_prazo = Entry(frame_adicionar, width=30)
-entrada_prazo.grid(row=1, column=1)
+Label(frame_adicionar, text="Prazo:").grid(row=1, column=0)
+cal = Calendar(frame_adicionar, selectmode='day')
+cal.grid(row=1, column=1)
 
 Button(frame_adicionar, text="Adicionar Tarefa", command=adicionar_tarefa_interface).grid(row=2, columnspan=2)
 
@@ -120,3 +119,4 @@ frame_tarefas.pack(pady=10)
 atualizar_lista()
 
 root.mainloop()
+conn.close()
